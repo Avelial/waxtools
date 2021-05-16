@@ -15,6 +15,19 @@
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
+function timeConverter(UNIX_timestamp){
+  var a = new Date(UNIX_timestamp * 1000);
+  var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var year = a.getFullYear();
+  var month = months[a.getMonth()];
+  var date = a.getDate();
+  var hour = a.getHours();
+  var min = a.getMinutes() < 10 ? '0' + a.getMinutes() : a.getMinutes();
+  var sec = a.getSeconds() < 10 ? '0' + a.getSeconds() : a.getSeconds();
+  var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+  return time;
+}
+
 function GenomeCheck(e) {
   let t = e.length,
     n = e.length / 2,
@@ -42,6 +55,7 @@ var max_gen;
 var min_speed;
 var min_stealth;
 var response;
+var cd;
 var table = document.getElementById('table');
 
 await delay(1000);
@@ -56,6 +70,7 @@ for(let i = 0; i < 40; i++){
             stats =  GenomeCheck(position['idata']['genome']);
             gen = Number(position['idata']['gen']);
             kids =  Number(position['mdata']['kids']);
+            cd =  Number(position['mdata']['cd']);
 
             max_kids = Number(document.getElementById('max_kids').value);
             max_gen = Number(document.getElementById('max_gen').value);
@@ -65,6 +80,14 @@ for(let i = 0; i < 40; i++){
 
             if (Number(stats[0]) >= min_speed && Number(stats[1]) >= min_stealth && kids <= max_kids && gen <= max_gen){
                 var tr = document.createElement("tr");
+                var td6 = document.createElement("td");
+                td6.innerHTML = timeConverter(cd);
+                if(Math.floor(Date.now() / 1000) > cd){
+                    td6.style.color = "green";
+                }
+                else{
+                    td6.style.color = "red";
+                }
                 var td0 = document.createElement("td");
                 td0.innerHTML = String(price) + " WAX";
                 var td1 = document.createElement("td");
@@ -79,6 +102,7 @@ for(let i = 0; i < 40; i++){
                 td5.innerHTML = '<a href="https://wax.simplemarket.io/products/asset/'+ String(position["assetId"]) + '">' + 'https://wax.simplemarket.io/products/asset/' + String(position["assetId"]) + '</a>';
 
                 tr.appendChild(td0);
+                tr.appendChild(td6);
                 tr.appendChild(td1);
                 tr.appendChild(td2);
                 tr.appendChild(td3);
@@ -93,6 +117,8 @@ for(let i = 0; i < 40; i++){
     await delay(100);
 }
 }
+
+
 
 
 
@@ -127,6 +153,7 @@ for(let i = 0; i < 40; i++){
         <thead>
         <tr>
             <th scope="col">Price</th>
+            <th scope="col">cd</th>
             <th scope="col">Gen</th>
             <th scope="col">Kids</th>
             <th scope="col">Speed</th>

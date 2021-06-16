@@ -11,7 +11,7 @@
 </head>
 <body style="background-color: #fff;">
 
-<script type="text/javascript" >
+<script type="text/javascript">
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
    (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
@@ -22,10 +22,15 @@
         accurateTrackBounce:true,
         webvisor:true
    });
+
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/81014557" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<noscript>
+    <div><img src="https://mc.yandex.ru/watch/81014557" style="position:absolute; left:-9999px;" alt=""/></div>
+</noscript>
 
 <script>
+
+var start_pos = 0;
 
 const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -51,6 +56,9 @@ function GenomeCheck(e) {
 }
 
 async function update_sort(){
+
+start_pos = start_pos + 1;
+
 var SIMPLEMARKET_URL = 'https://wax.simplemarket.io/api/v2/market?limit=100&=&authors=ilovekolobok&asset.mdata.health.raw=100&sortOrder=1&isVerifiedOnly=true&skip=';
 let arr = [];
 page_count = Number(document.getElementById('page_count').value);
@@ -62,6 +70,7 @@ for (let i = 0; i < page_count; i++) {
 }
 
 var position;
+var this_start_pos = start_pos;
 var stats;
 var gen;
 var kids;
@@ -70,13 +79,19 @@ var max_gen;
 var min_speed;
 var min_stealth;
 var response;
+var count;
 var cd;
 var pe;
 var table = document.getElementById('table');
 
 await delay(1000);
-for(let i = 0; i < page_count; i++){
+for(let i = 0; i < Math.floor(page_count/4); i++){
+    if (this_start_pos != start_pos){
     table.innerHTML = '';
+    return;
+    }
+    table.innerHTML = '';
+    count = 0;
     for(let j = 0; j < page_count; j++){
     try {
 
@@ -127,7 +142,8 @@ for(let i = 0; i < page_count; i++){
                 advf = false;
             }
 
-            if (advf && Number(stats[0]) >= min_speed && Number(stats[1]) >= min_stealth && kids <= max_kids && gen <= max_gen){
+            if (count < 300 && advf && Number(stats[0]) >= min_speed && Number(stats[1]) >= min_stealth && kids <= max_kids && gen <= max_gen){
+                count = count + 1;
                 var tr = document.createElement("tr");
                 var td6 = document.createElement("td");
                 td6.innerHTML = timeConverter(cd);
@@ -163,35 +179,15 @@ for(let i = 0; i < page_count; i++){
 
                 table.appendChild(tr);
             }
+            if (count > 300){
+                return;
+            }
         }
      } catch (err) {console.log(err);}
     }
-    await delay(100);
+    await delay(400);
 }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </script>
 
 <nav class="navbar navbar-dark justify-content-between" style="background-color: #7952b3; width: 130%;">

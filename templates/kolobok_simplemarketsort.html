@@ -39,7 +39,8 @@ function GenomeCheck(e) {
 async function update_sort(){
 var SIMPLEMARKET_URL = 'https://wax.simplemarket.io/api/v2/market?limit=100&=&authors=ilovekolobok&asset.mdata.health.raw=100&sortOrder=1&isVerifiedOnly=true&skip=';
 let arr = [];
-for (let i = 0; i < 40; i++) {
+page_count = Number(document.getElementById('page_count').value);
+for (let i = 0; i < page_count; i++) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', SIMPLEMARKET_URL + String(100 * i), true);
     xhr.send();
@@ -56,12 +57,13 @@ var min_speed;
 var min_stealth;
 var response;
 var cd;
+var pe;
 var table = document.getElementById('table');
 
 await delay(1000);
-for(let i = 0; i < 40; i++){
+for(let i = 0; i < page_count; i++){
     table.innerHTML = '';
-    for(let j = 0; j < 40; j++){
+    for(let j = 0; j < page_count; j++){
     try {
         response = JSON.parse(arr[j].responseText);
         response = response['items'];
@@ -71,6 +73,15 @@ for(let i = 0; i < 40; i++){
             gen = Number(position['idata']['gen']);
             kids =  Number(position['mdata']['kids']);
             cd =  Number(position['mdata']['cd']);
+            pe = "00000";
+            try {
+                pe = position['mdata']['pe'];
+                 }
+            catch (e) {
+            }
+            if (typeof pe == 'undefined'){
+                pe = "00000";
+            }
 
             max_kids = Number(document.getElementById('max_kids').value);
             max_gen = Number(document.getElementById('max_gen').value);
@@ -100,9 +111,12 @@ for(let i = 0; i < 40; i++){
                 td4.innerHTML = String(stats[1]);
                 var td5 = document.createElement("td");
                 td5.innerHTML = '<a href="https://wax.simplemarket.io/products/asset/'+ String(position["assetId"]) + '">' + 'https://wax.simplemarket.io/products/asset/' + String(position["assetId"]) + '</a>';
+                var td7 = document.createElement("td");
+                td7.innerHTML = String(pe);
 
                 tr.appendChild(td0);
                 tr.appendChild(td6);
+                tr.appendChild(td7);
                 tr.appendChild(td1);
                 tr.appendChild(td2);
                 tr.appendChild(td3);
@@ -117,6 +131,9 @@ for(let i = 0; i < 40; i++){
     await delay(100);
 }
 }
+
+
+
 
 
 
@@ -154,6 +171,7 @@ for(let i = 0; i < 40; i++){
         <tr>
             <th scope="col">Price</th>
             <th scope="col">cd</th>
+            <th scope="col">pe</th>
             <th scope="col">Gen</th>
             <th scope="col">Kids</th>
             <th scope="col">Speed</th>
@@ -167,7 +185,7 @@ for(let i = 0; i < 40; i++){
 </div>
 
 
-<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 3%">
+<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 2%">
     <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon1">max_kids</span>
     </div>
@@ -199,9 +217,17 @@ for(let i = 0; i < 40; i++){
            aria-describedby="basic-addon4" id="min_stealth" value="0.99">
 </div>
 
-<button type="button" class="btn btn-warning w-25" onclick="update_sort();" style="margin-left: 1%; margin-top: 2%">
+<button type="button" class="btn btn-warning w-25" onclick="update_sort();" style="margin-left: 1%; margin-top: 1%">
     Search
 </button>
+
+<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 4%">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon5">sm_page_count</span>
+    </div>
+    <input type="text" class="form-control" placeholder="" aria-label=""
+           aria-describedby="basic-addon4" id="page_count" value="30">
+</div>
 
 
 <div class="fixed-bottom">
@@ -209,6 +235,7 @@ for(let i = 0; i < 40; i++){
         <div class="text-center p-3" style="background-color: #c0c0c0; color: #FFF;">
             Telegram:
             <a href="https://t.me/lPTKl" style="color: #FFF;"> lPTKl</a>
+            | WAX: conrg.wam
         </div>
     </footer>
 </div>

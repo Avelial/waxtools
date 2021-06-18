@@ -164,7 +164,7 @@ for(let i = 0; i < Math.floor(page_count/4); i++){
                 var td4 = document.createElement("td");
                 td4.innerHTML = String(stats[1]);
                 var td5 = document.createElement("td");
-                td5.innerHTML = '<a href="https://wax.simplemarket.io/products/asset/'+ String(position["assetId"]) + '">' + 'https://wax.simplemarket.io/products/asset/' + String(position["assetId"]) + '</a>';
+                td5.innerHTML = '<a target="_blank" href="https://wax.simplemarket.io/products/asset/'+ String(position["assetId"]) + '">' + 'https://wax.simplemarket.io/products/asset/' + String(position["assetId"]) + '</a>';
                 var td7 = document.createElement("td");
                 td7.innerHTML = String(pe);
 
@@ -286,7 +286,7 @@ for(let i = 0; i < Math.floor(page_count/4); i++){
         <span class="input-group-text" id="basic-addon5">sm_page_count</span>
     </div>
     <input type="text" class="form-control" placeholder="" aria-label=""
-           aria-describedby="basic-addon4" id="page_count" value="80">
+           aria-describedby="basic-addon4" id="page_count" value="300">
 </div>
 
 

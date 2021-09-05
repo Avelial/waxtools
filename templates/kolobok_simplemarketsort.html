@@ -23,6 +23,8 @@
         webvisor:true
    });
 
+
+
 </script>
 <noscript>
     <div><img src="https://mc.yandex.ru/watch/81014557" style="position:absolute; left:-9999px;" alt=""/></div>
@@ -59,12 +61,16 @@ async function update_sort(){
 
 start_pos = start_pos + 1;
 
-var SIMPLEMARKET_URL = 'https://wax.simplemarket.io/api/v2/market?limit=100&=&authors=ilovekolobok&asset.mdata.health.raw=100&sortOrder=1&isVerifiedOnly=true&skip=';
+var SIMPLEMARKET_URL = 'https://wax.simplemarket.io/api/v2/market?limit=100&=&authors=ilovekolobok&asset.mdata.health.raw=100&sortOrder=1&isVerifiedOnly=true';
+var need_gen = document.getElementById('need_gen').value;
+if(need_gen != ''){
+    SIMPLEMARKET_URL = SIMPLEMARKET_URL + '&asset.idata.gen.raw=' + need_gen;
+}
 let arr = [];
 page_count = Number(document.getElementById('page_count').value);
 for (let i = 0; i < page_count; i++) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', SIMPLEMARKET_URL + String(100 * i), true);
+    xhr.open('GET', SIMPLEMARKET_URL + '&skip=' + String(100 * i), true);
     xhr.send();
     arr.push(xhr);
 }
@@ -188,6 +194,8 @@ for(let i = 0; i < Math.floor(page_count/4); i++){
     await delay(400);
 }
 }
+
+
 </script>
 
 <nav class="navbar navbar-dark justify-content-between" style="background-color: #7952b3; width: 130%;">
@@ -231,7 +239,7 @@ for(let i = 0; i < Math.floor(page_count/4); i++){
            aria-describedby="basic-addon1" id="max_kids" value="12">
 </div>
 
-<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 2%">
+<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 1%">
     <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon2">max_gen</span>
     </div>
@@ -239,7 +247,15 @@ for(let i = 0; i < Math.floor(page_count/4); i++){
            aria-describedby="basic-addon2" id="max_gen" value="35">
 </div>
 
-<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 2%">
+<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 1%">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="basic-addon6">need_gen</span>
+    </div>
+    <input type="text" class="form-control" placeholder="" aria-label=""
+           aria-describedby="basic-addon6" id="need_gen" value="">
+</div>
+
+<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 1%">
     <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon3">min_speed</span>
     </div>
@@ -247,7 +263,7 @@ for(let i = 0; i < Math.floor(page_count/4); i++){
            aria-describedby="basic-addon3" id="min_speed" value="200">
 </div>
 
-<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 2%">
+<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 1%">
     <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon4">min_stealth</span>
     </div>
@@ -281,7 +297,7 @@ for(let i = 0; i < Math.floor(page_count/4); i++){
         Search
     </button>
 </div>
-<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 2%">
+<div class="input-group mb-3 w-25" style="margin-left: 1%; margin-top: 1%">
     <div class="input-group-prepend">
         <span class="input-group-text" id="basic-addon5">sm_page_count</span>
     </div>
